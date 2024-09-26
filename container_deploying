@@ -1,0 +1,15 @@
+node {
+    def mavenHome = tool name : "maven-3.9.3"
+    stage('Checkout code') {
+        git 'https://github.com/Lokesh9192/Maven-WebApplication.git'
+    }
+    stage('Build') {
+        sh "${mavenHome}/bin/mvn clean package" 
+    }
+    stage('image building') {
+        sh "docker build -t newimage ."
+    }
+    stage('container creation') {
+     sh "docker run -d -p 8082:8080 --name assignmentcontainer newimage"   
+    }
+}
