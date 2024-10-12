@@ -1,0 +1,30 @@
+version: "3"
+services:
+  springapp:
+    image: user593/spring-boot-mongo-docker:1
+    ports:
+    - 8080:8080
+    depends_on:
+    - mongo
+    environment:
+    - MONGO_DB_HOSTNAME=mongo
+    - MONGO_DB_USERNAME=root
+    - MONGO_DB_PASSWORD=root123
+    networks:
+    - snapbridge
+  mongo:
+    image: mongo
+    volumes:
+    - mongovol:/data/db
+    networks:
+    - snapbridge
+    environment:
+    - MONGO_INIT_DB_ROOT_USERNAME=root
+    - MONGO_INIT_DB_ROOT_PASSWORD=root123
+networks:
+  snapbridge:
+    driver: bridge
+
+volumes:
+  mongovol:
+    driver: local
